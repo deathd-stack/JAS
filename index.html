@@ -1,266 +1,92 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ffffff">
-<title>JAS</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<title>JAS SCHEDULE VER.8</title>
 <style>
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont;
-  background:#ffffff;
-}
-
-.header{
-  text-align:center;
-  font-size:38px;
-  font-weight:bold;
-  color:#ff6a00;
-  margin-top:20px;
-}
-
-.date{
-  text-align:center;
-  margin:10px 0;
-}
-
-.mode{
-  text-align:center;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.container{
-  width:95%;
-  margin:auto;
-}
-
-.card{
-  margin-bottom:25px;
-  border-radius:8px;
-  overflow:hidden;
-}
-
-.row{
-  padding:10px;
-  border-bottom:2px solid #000;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.memo textarea{
-  width:100%;
-  height:60px;
-}
-
-.time-btn{
-  border:2px solid #000;
-  padding:6px 12px;
-  min-width:70px;
-  text-align:center;
-}
+  :root{--orange1:#ffb347;--orange2:#ff7a00;--orange3:#ff5a00;--line:#2e2e32;--text:#f5f5f7;--muted:#b4b4bc;--shadow:0 20px 44px rgba(0,0,0,.34);--shadow-soft:0 10px 24px rgba(0,0,0,.26);--ui:.78;}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent} html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;font-weight:900;color:var(--text);min-height:100vh;overflow-x:hidden;background:radial-gradient(1000px 420px at 50% 8%, rgba(255,122,0,.22), transparent 60%),linear-gradient(180deg,#f3e6de 0%,#ebddd4 20%,#df7a2d 74%,#a84710 100%)}
+  header{text-align:center;padding:22px 14px 8px;user-select:none}.titleWrap{display:flex;justify-content:center;align-items:baseline;gap:10px;flex-wrap:wrap}.titleMain{font-size:36px;font-weight:1000;letter-spacing:-1.2px;line-height:1;color:#fff;text-shadow:0 0 18px rgba(0,0,0,.14)}.titleVer{font-size:15px;font-weight:1000;opacity:.92;color:#fff2d8;letter-spacing:.4px}
+  .controls{width:min(920px,calc(100% - 22px));margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:8px 0}.controlsRow{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:nowrap}.pillBox{flex:1;min-width:0;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.06);border-radius:999px;padding:8px 10px;background:linear-gradient(180deg,rgba(40,40,44,.96),rgba(27,27,30,.96));box-shadow:var(--shadow-soft)}.pillBox label{color:#fff;font-size:13px;font-weight:1000;white-space:nowrap;text-transform:uppercase}
+  select,input,textarea{font-family:inherit;font-size:15px;font-weight:1000;border:2px solid var(--line);border-radius:16px;outline:none;background:#121214;color:#fff;text-transform:uppercase;height:38px;padding:0 10px;min-width:0;width:100%} textarea{text-transform:none;height:260px;padding:12px;resize:none;border-radius:22px}
+  button{border:none;border-radius:999px;background:linear-gradient(180deg,rgba(40,40,44,.96),rgba(27,27,30,.96));padding:12px 16px;font-weight:1000;color:var(--orange1);font-size:14px;box-shadow:var(--shadow-soft);text-transform:uppercase;cursor:pointer;border:1px solid rgba(255,255,255,.06)} button:active{transform:scale(.985)}
+  .monthBar{width:min(920px,calc(100% - 22px));margin:4px auto 10px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:nowrap}.monthLabel{flex:1;text-align:center;background:rgba(34,34,38,.96);border:1px solid rgba(255,255,255,.06);border-radius:999px;padding:12px 14px;font-size:15px;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.20);letter-spacing:.3px}.monthBtn{box-shadow:none;background:rgba(34,34,38,.92);min-width:72px}
+  .mainBadge{width:min(920px,calc(100% - 22px));margin:0 auto 10px;background:rgba(18,18,20,.74);border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:12px 14px;box-shadow:0 12px 24px rgba(0,0,0,.20);display:flex;justify-content:space-between;align-items:center;gap:10px}.mainBadge .b1{font-size:14px;color:#fff2d8}.mainBadge .b2{font-size:13px;color:var(--muted);text-align:right}
+  .calendarWrap{width:min(920px,calc(100% - 22px));margin:0 auto 240px;background:linear-gradient(180deg,rgba(34,34,38,.96),rgba(24,24,27,.96));border-radius:28px;padding:12px;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.06);overflow:hidden;position:relative}.calendarWrap::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(180deg,var(--orange1),var(--orange2),var(--orange3));box-shadow:0 0 20px rgba(255,122,0,.25)}
+  .weekHead,.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-left:4px}.weekHead div{text-align:center;color:#fff2d8;font-size:12px;padding:7px 0}.sun{color:#ff7779!important}.sat{color:#86aaff!important}
+  .dayCell{min-height:104px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.055);border-radius:18px;padding:8px;display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden;cursor:pointer}.dayCell.out{opacity:.33}.dayCell.today{border-color:rgba(255,122,0,.75);box-shadow:0 0 0 3px rgba(255,122,0,.12)}
+  .dayTop{display:flex;justify-content:space-between;align-items:center;gap:4px}.dayNum{font-size:14px;color:#fff}.dayTeam{font-size:10px;color:#fff2d8;background:rgba(255,122,0,.16);border-radius:999px;padding:3px 6px;white-space:nowrap}.shiftText{font-size:15px;line-height:1.12;color:#fff;word-break:break-word;white-space:pre-wrap}.leaveLine{font-size:10.5px;color:#fff2d8;background:rgba(255,122,0,.12);border:1px solid rgba(255,122,0,.12);border-radius:10px;padding:3px 5px;line-height:1.18;word-break:break-word}.memoText{font-size:11px;color:#cfcfd6;line-height:1.2;word-break:break-word;white-space:pre-wrap}.allCount{margin-top:auto;font-size:10px;color:var(--muted);text-align:right}
+  .bottomActions{position:fixed;left:12px;right:12px;bottom:14px;display:flex;justify-content:space-between;gap:10px;z-index:30;pointer-events:none}.bottomActions button{pointer-events:auto;min-width:110px;height:46px;padding:0 12px}.primaryBtn{background:linear-gradient(180deg,#ff9a2f,#ff6a00);color:#fff}.darkBtn{background:linear-gradient(180deg,#2d2d33,#1c1c20);color:var(--orange1)}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.58);display:none;justify-content:center;align-items:flex-end;z-index:50;overscroll-behavior:contain}.box{width:100%;max-width:760px;background:#17171a;border-radius:30px 30px 0 0;padding:0 14px 18px;max-height:92vh;overflow:auto;box-shadow:0 -10px 30px rgba(0,0,0,.28);border-top:1px solid rgba(255,255,255,.05)}.dragArea{padding:8px 0;position:sticky;top:0;background:#17171a;z-index:3}.drag-handle{width:62px;height:8px;background:#494952;border-radius:999px;margin:0 auto 8px}.topActionBar{display:flex;justify-content:space-between;align-items:center;gap:10px}.modalTitle{text-align:center;font-size:17px;color:#fff;font-weight:1000;padding:12px 0;text-transform:uppercase}.section{background:#1f1f23;border-radius:24px;padding:12px;margin:10px 0;border:1px solid rgba(255,255,255,.05)}.sectionTitle{font-size:18px;color:#fff;margin-bottom:10px;text-transform:uppercase}.editGrid{display:grid;grid-template-columns:82px 1fr;gap:8px;align-items:center}.editGrid label{font-size:14px;color:#fff2d8}.editGrid input,.editGrid select{height:44px;text-align:left}.hint{font-size:12px;color:var(--muted);line-height:1.45;margin-top:8px}
+  .codeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.codeBtn{height:42px;padding:0;border-radius:16px;box-shadow:none;background:#242429;color:#fff}.codeBtn.active{background:linear-gradient(180deg,#ff9a2f,#ff6a00);color:#fff}.memberTop{display:flex;gap:8px;align-items:center}.memberTop input{text-align:left;height:44px}.memberTop button{height:44px;padding:0 14px;white-space:nowrap}.memberList{display:flex;flex-direction:column;gap:8px;margin-top:10px}.memberRow{display:grid;grid-template-columns:.58fr 82px 92px 36px;gap:7px;align-items:center}.memberNameBtn{height:42px;border-radius:16px;background:#242429;color:#fff;text-align:left;padding:0 9px;box-shadow:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.memberNameBtn.leave{background:linear-gradient(180deg,#ff9a2f,#ff6a00);color:#fff}.leaveSelect{height:42px;font-size:12px;padding:0 6px}.otInput{height:42px;font-size:16px;text-align:center;letter-spacing:.7px;padding:0 6px}.minusBtn{height:42px;border-radius:16px;background:#242429;box-shadow:none;padding:0;color:var(--orange1)}
+  .summaryPanel{width:min(920px,calc(100% - 22px));margin:-220px auto 150px;background:rgba(18,18,20,.86);border:1px solid rgba(255,255,255,.07);border-radius:24px;padding:12px;box-shadow:0 14px 28px rgba(0,0,0,.22)}.summaryTop{display:none}.summaryTitle{font-size:14px;color:#fff;text-transform:uppercase}.summaryTotal{font-size:12px;color:#fff2d8;white-space:nowrap}.summaryPeople{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-bottom:2px}.personChip{flex:0 0 auto;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:7px 10px;font-size:12px;color:#fff;font-weight:1000}.personChip b{color:var(--orange1);font-weight:1000}.personChip.holiday b{color:#9fc0ff}.holidayWork{background:rgba(77,141,255,.14);border-color:rgba(77,141,255,.16);color:#dbe6ff}.allTeamList{display:flex;flex-direction:column;gap:8px}.bulkOtRow{display:grid;grid-template-columns:1fr 120px;gap:8px;align-items:center;margin-bottom:10px}.bulkOtRow input{text-align:center;height:44px}.bulkOtBtn{height:44px;padding:0 12px}.teamEditRow{display:grid;grid-template-columns:78px 1fr;gap:8px;align-items:center}.teamNamePill{background:linear-gradient(180deg,#ff9a2f,#ff6a00);border-radius:999px;color:#fff;text-align:center;padding:10px 4px;font-size:12px}.teamEditRow input{height:42px;text-align:left}
+  @media(max-width:520px){.summaryPanel{margin:-220px auto 150px}.titleMain{font-size:31px}.titleVer{font-size:13px}.controlsRow{gap:7px}.pillBox{padding:7px 8px}.pillBox label{font-size:12px}select,input{font-size:13px}.monthBtn{min-width:58px;padding:10px}.dayCell{min-height:98px;border-radius:15px;padding:7px}.shiftText{font-size:13px}.calendarWrap{padding:10px;border-radius:24px}.weekHead,.calendar{gap:5px}.mainBadge{border-radius:20px}.codeGrid{grid-template-columns:repeat(3,1fr)}.memberRow{grid-template-columns:.56fr 70px 86px 34px}.bulkOtRow{grid-template-columns:1fr 96px}.teamEditRow{grid-template-columns:68px 1fr}.teamNamePill{font-size:11px}}
 </style>
 </head>
+<body>
+<header><div class="titleWrap"><div class="titleMain">JAS SCHEDULE</div><div class="titleVer">VER.8</div></div></header>
+<div class="controls"><div class="controlsRow"><div class="pillBox"><label>TEAM</label><select id="teamSelect"></select></div><div class="pillBox"><label>MAIN</label><select id="mainSelect"></select></div></div></div>
+<div class="monthBar"><button class="monthBtn" id="prevMonthBtn">PREV</button><div class="monthLabel" id="monthLabel">2026.06</div><button class="monthBtn" id="nextMonthBtn">NEXT</button></div>
+<div class="mainBadge"><div class="b1" id="badgeTeam">MAIN TEAM</div><div class="b2">조원 연차는 달력 칸 밖에 바로 표시</div></div>
+<div class="calendarWrap"><div class="weekHead"><div class="sun">SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div class="sat">SAT</div></div><div class="calendar" id="calendar"></div></div>
+<div class="summaryPanel" id="summaryPanel"><div class="summaryTop"><div class="summaryTitle">MONTH OVERTIME</div><div class="summaryTotal" id="summaryTotal">일반 0분 · 휴근 0분</div></div><div class="summaryPeople" id="summaryPeople"></div></div>
+<div class="bottomActions"><button class="darkBtn" id="todayBtn">TODAY</button><button class="darkBtn" id="memberBtn">조원 추가</button><button class="primaryBtn" id="monthEditBtn">MONTH INPUT</button></div>
 
-<body onclick="handleBackgroundTap(event)">
+<div class="modal" id="dayModal"><div class="box"><div class="dragArea"><div class="drag-handle"></div><div class="topActionBar"><button id="dayCloseBtn">CLOSE</button><button class="primaryBtn" id="daySaveBtn">SAVE</button></div></div><div class="modalTitle" id="dayModalTitle">DAY EDIT</div>
+  <div class="section"><div class="sectionTitle">근무 코드 선택</div><div class="codeGrid" id="codeGrid"></div><div class="hint">날짜를 누르면 여기서 근무 코드를 선택할 수 있어. 선택한 코드는 달력 칸에 크게 표시돼.</div></div>
+  <div class="section"><div class="sectionTitle">근무 입력</div><div class="editGrid"><label id="selectedTeamLabel">CODE</label><input id="shiftInput" placeholder="근무 코드" /><label>MEMO</label><input id="memoInput" placeholder="간단 메모" /></div></div>
+  <div class="section"><div class="sectionTitle">조원별 근무 / 연차</div><div class="bulkOtRow"><input id="bulkOtInput" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="전체 연장 예: 0200" /><button class="primaryBtn bulkOtBtn" id="applyBulkOtBtn">전체 적용</button></div><div class="memberList" id="dayMemberList"></div><div class="hint">맨 위 연장시간을 입력하고 전체 적용을 누르면 모든 조원에게 먼저 들어가. 이후 각 조원별로 따로 수정 가능해. 예: 0200 = 2시간 00분, 0130 = 1시간 30분.</div></div>
+</div></div>
 
-<div class="header">JAS</div>
-<div class="date" id="todayDate"></div>
-<div class="mode" id="modeLabel">1조</div>
+<div class="modal" id="memberModal"><div class="box"><div class="dragArea"><div class="drag-handle"></div><div class="topActionBar"><button id="memberCloseBtn">CLOSE</button><button class="primaryBtn" id="memberSaveBtn">SAVE</button></div></div><div class="modalTitle">조원 관리</div>
+  <div class="section"><div class="sectionTitle" id="memberTeamTitle">선택 조 조원</div><div class="memberTop"><input id="newMemberInput" placeholder="조원 이름" /><button class="primaryBtn" id="addMemberBtn">추가</button></div><div class="memberList" id="memberManageList"></div><div class="hint">조원은 조별 최대 6명까지 저장돼.</div></div>
+</div></div>
 
-<div class="container">
-<div id="scheduleArea"></div>
-</div>
+<div class="modal" id="monthModal"><div class="box"><div class="dragArea"><div class="drag-handle"></div><div class="topActionBar"><button id="monthCloseBtn">CLOSE</button><button class="primaryBtn" id="monthSaveBtn">SAVE</button></div></div><div class="modalTitle">MONTH INPUT</div><div class="section"><div class="sectionTitle">선택 조 한달 빠른 입력</div><textarea id="monthText" placeholder="예시&#10;1 주간&#10;2 야간&#10;3 휴무&#10;15 09-18 회의"></textarea><div class="hint">각 줄 앞 숫자를 날짜로 인식해. 예: “20 휴무” → 20일 선택 조 스케줄에 저장.</div></div></div></div>
 
 <script>
+const TEAMS=[...Array.from({length:24},(_,i)=>`${i+1}조`),'토잉1','토잉2','토잉3','통제'];
+const WORK_CODES=['A3','A4','A53','ALL53','P13','P133','P14','P15','A8','R43','R14','휴무'];
+const MEMBER_CODES=['','연차','오전연차','오후연차','병가','교육','A3','A4','A53','ALL53','P13','P133','P14','P15','A8','R43','R14'];
+const HOLIDAY_WORK_CODES=['R43','R14'];
+const MAX_MEMBERS=6;
+const STORE_KEY='JAS_SCHEDULE_V2'; const MEMBER_KEY='JAS_SCHEDULE_MEMBERS_V2'; const MAIN_KEY='JAS_SCHEDULE_MAIN_TEAM';
+let schedules=loadJson(STORE_KEY,{}); let members=loadJson(MEMBER_KEY,{}); let viewDate=new Date(); viewDate.setDate(1); let selectedTeam=localStorage.getItem(MAIN_KEY)||'1조'; let selectedDateKey='';
+const $=id=>document.getElementById(id); const pad=n=>String(n).padStart(2,'0'); const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+function loadJson(k,f){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))||f}catch(e){return f}} function saveSchedules(){localStorage.setItem(STORE_KEY,JSON.stringify(schedules))} function saveMembers(){localStorage.setItem(MEMBER_KEY,JSON.stringify(members))}
+function escapeHtml(v){return String(v||'').replace(/[&<>\"]/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[s]))} function escapeAttr(v){return escapeHtml(v)}
+function getDayData(key){if(!schedules[key]) schedules[key]={}; return schedules[key]} function getTeamData(key,team){const d=getDayData(key); if(!d[team]) d[team]={shift:'',memo:'',leaves:{},ot:{}}; if(!d[team].leaves) d[team].leaves={}; if(!d[team].ot) d[team].ot={}; return d[team]} function getMembers(team){if(!members[team]) members[team]=[]; return members[team]}
+function isWorkCode(code){return WORK_CODES.includes(code)&&code!=='휴무'}
+function isNonCountCode(code){return !code||code==='연차'||code==='오전연차'||code==='오후연차'||code==='병가'||code==='교육'||code==='휴무'}
+function getCodeValue(v){return (v&&typeof v==='object')?(v.code||''):(v||'')}
+function parseOtInput(v){v=String(v||'').replace(/[^0-9]/g,''); if(!v)return 0; if(v.length<=2)return Number(v)||0; v=v.padStart(4,'0').slice(-4); const h=Number(v.slice(0,-2))||0; const m=Math.min(59,Number(v.slice(-2))||0); return h*60+m}
+function formatOt(min){min=Number(min)||0; if(!min)return ''; const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}${String(m).padStart(2,'0')}`}
+function getOtValue(data,name){const direct=data.ot&&data.ot[name]; if(direct!==undefined)return Number(direct)||0; const v=data.leaves&&data.leaves[name]; return (v&&typeof v==='object')?Number(v.ot||0):0}
+function personWorks(baseShift, memberCode){memberCode=getCodeValue(memberCode); if(memberCode){return isWorkCode(memberCode)} return isWorkCode(baseShift)}
+function personHolidayWorks(memberCode){return HOLIDAY_WORK_CODES.includes(getCodeValue(memberCode))}
+function initSelects(){for(const t of TEAMS){let o1=document.createElement('option'); o1.value=t; o1.textContent=t; $('teamSelect').appendChild(o1); let o2=document.createElement('option'); o2.value=t; o2.textContent=t; $('mainSelect').appendChild(o2)} $('teamSelect').value=selectedTeam; $('mainSelect').value=localStorage.getItem(MAIN_KEY)||selectedTeam;}
+function render(){ $('monthLabel').textContent=`${viewDate.getFullYear()}.${pad(viewDate.getMonth()+1)}`; $('badgeTeam').textContent=`MAIN ${localStorage.getItem(MAIN_KEY)||selectedTeam} / VIEW ${selectedTeam}`; const cal=$('calendar'); cal.innerHTML=''; const first=new Date(viewDate.getFullYear(),viewDate.getMonth(),1); const start=new Date(first); start.setDate(1-first.getDay()); const todayKey=ymd(new Date());
+  for(let i=0;i<42;i++){const d=new Date(start); d.setDate(start.getDate()+i); const key=ymd(d); const out=d.getMonth()!==viewDate.getMonth(); const teamData=(schedules[key]&&schedules[key][selectedTeam])||{}; const membersMap=teamData.leaves||{}; const memberLines=Object.entries(membersMap).map(([n,c])=>[n,getCodeValue(c),getOtValue(teamData,n)]).filter(([n,c,ot])=>c||ot).map(([n,c,ot])=>`${n} ${c}${ot?` ${formatOt(ot)}`:''}`); const totalCount=schedules[key]?Object.values(schedules[key]).filter(v=>v&&(v.shift||v.memo||Object.values(v.leaves||{}).some(Boolean))).length:0; const cell=document.createElement('div'); cell.className=`dayCell${out?' out':''}${key===todayKey?' today':''}`; const isHoliday=teamData.shift==='휴무'; cell.innerHTML=`<div class="dayTop"><div class="dayNum">${d.getDate()}</div></div><div class="shiftText">${escapeHtml(teamData.shift||'')}</div>${memberLines.slice(0,6).map(v=>`<div class="leaveLine ${v.includes('R43')||v.includes('R14')?'holidayWork':''}">${escapeHtml(v)}</div>`).join('')}<div class="memoText">${escapeHtml(teamData.memo||'')}</div><div class="allCount">${isHoliday?'전체 휴무 ':''}${totalCount?totalCount+' TEAM':''}</div>`; cell.onclick=()=>openDayModal(key); cal.appendChild(cell)} renderSummary(); }
+function renderSummary(){const y=viewDate.getFullYear(),m=viewDate.getMonth(); const last=new Date(y,m+1,0).getDate(); let normal=0, holiday=0; const people={}; const peopleHoliday={}; for(let day=1;day<=last;day++){const key=`${y}-${pad(m+1)}-${pad(day)}`; const data=(schedules[key]&&schedules[key][selectedTeam])||{}; const baseShift=getCodeValue(data.shift||''); const list=getMembers(selectedTeam); const map=data.leaves||{}; for(const name of list){const memberCode=getCodeValue(map[name]||''); const effectiveCode=memberCode||baseShift; const minutes=getOtValue(data,name); if(!minutes) continue; if(!effectiveCode||effectiveCode==='연차'||effectiveCode==='오전연차'||effectiveCode==='오후연차'||effectiveCode==='병가'||effectiveCode==='교육') continue; if(personHolidayWorks(effectiveCode)){holiday+=minutes; peopleHoliday[name]=(peopleHoliday[name]||0)+minutes;} else {normal+=minutes; people[name]=(people[name]||0)+minutes;}} } $('summaryTotal').textContent=''; const merged={}; for(const [n,v] of Object.entries(people)) merged[n]=(merged[n]||0)+v; for(const [n,v] of Object.entries(peopleHoliday)) merged[n]=(merged[n]||0)+v; const chips=Object.entries(merged).sort((a,b)=>b[1]-a[1]).map(([n,min])=>`<span class="personChip">${escapeHtml(n)} <b>${formatOt(min)||'0000'}</b></span>`).join(''); $('summaryPeople').innerHTML=chips||'<span class="personChip">연장시간 없음</span>'; }
+function openDayModal(key){selectedDateKey=key; $('dayModalTitle').textContent=`${key} SCHEDULE`; $('selectedTeamLabel').textContent='CODE'; const data=getTeamData(key,selectedTeam); $('shiftInput').value=data.shift||''; $('memoInput').value=data.memo||''; $('bulkOtInput').value=''; renderCodeGrid(data.shift||''); renderDayMemberList(key); $('dayModal').style.display='flex'} function closeDayModal(){$('dayModal').style.display='none'}
+function renderCodeGrid(current){const grid=$('codeGrid'); grid.innerHTML=''; WORK_CODES.forEach(code=>{const b=document.createElement('button'); b.className='codeBtn'+(current===code?' active':''); b.textContent=code; b.onclick=()=>{$('shiftInput').value=code; renderCodeGrid(code)}; grid.appendChild(b)})}
+function renderDayMemberList(key){const wrap=$('dayMemberList'); wrap.innerHTML=''; const list=getMembers(selectedTeam); const data=getTeamData(key,selectedTeam); if(!list.length){wrap.innerHTML='<div class="hint">아직 조원이 없어. 아래 조원 추가 버튼에서 먼저 추가해줘.</div>'; return} list.forEach(name=>{const row=document.createElement('div'); row.className='memberRow'; const cur=getCodeValue((data.leaves&&data.leaves[name])||''); const ot=getOtValue(data,name); row.innerHTML=`<button class="memberNameBtn ${cur?'leave':''}" data-name="${escapeAttr(name)}">${escapeHtml(name)}</button><select class="leaveSelect" data-name="${escapeAttr(name)}">${MEMBER_CODES.map(c=>`<option value="${escapeAttr(c)}" ${c===cur?'selected':''}>${c||'기본'}</option>`).join('')}</select><input class="otInput" data-name="${escapeAttr(name)}" inputmode="numeric" pattern="[0-9]*" value="${formatOt(ot)}" placeholder="0200" maxlength="4" /><button class="minusBtn clearLeaveBtn" data-name="${escapeAttr(name)}">×</button>`; wrap.appendChild(row)}); wrap.querySelectorAll('.memberNameBtn').forEach(btn=>btn.onclick=()=>{const sel=wrap.querySelector(`.leaveSelect[data-name="${CSS.escape(btn.dataset.name)}"]`); if(sel){sel.value=sel.value?'':'연차'; btn.classList.toggle('leave',!!sel.value)}}); wrap.querySelectorAll('.clearLeaveBtn').forEach(btn=>btn.onclick=()=>{const sel=wrap.querySelector(`.leaveSelect[data-name="${CSS.escape(btn.dataset.name)}"]`); const ot=wrap.querySelector(`.otInput[data-name="${CSS.escape(btn.dataset.name)}"]`); if(sel) sel.value=''; if(ot) ot.value=''; const nameBtn=wrap.querySelector(`.memberNameBtn[data-name="${CSS.escape(btn.dataset.name)}"]`); if(nameBtn) nameBtn.classList.remove('leave')}); wrap.querySelectorAll('.leaveSelect').forEach(sel=>sel.onchange=()=>{const nameBtn=wrap.querySelector(`.memberNameBtn[data-name="${CSS.escape(sel.dataset.name)}"]`); if(nameBtn) nameBtn.classList.toggle('leave',!!sel.value)}); wrap.querySelectorAll('.otInput').forEach(inp=>inp.oninput=()=>{inp.value=inp.value.replace(/[^0-9]/g,'').slice(0,4)})}
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-
-const today = new Date();
-const todayStr =
-today.getFullYear()+"년 "+(today.getMonth()+1)+"월 "+today.getDate()+"일";
-
-document.getElementById("todayDate").innerText = todayStr;
-
-if(localStorage.getItem("savedDate") !== todayStr){
-  localStorage.clear();
-  localStorage.setItem("savedDate", todayStr);
-}
-
-let schedules = JSON.parse(localStorage.getItem("data")||"[]");
-
-let showAll=false;
-let currentTeam="1조";
-let lastTap=0;
-
-function saveData(){
-  localStorage.setItem("data", JSON.stringify(schedules));
-}
-
-function addSample(){
-  schedules.push({
-    arrFlight:"7C1302",
-    arrTime:"11:50",
-    arrGate:"127",
-    arrAirport:"KIX",
-    depFlight:"7C1703",
-    depTime:"15:10",
-    depAirport:"NGO",
-    hl:"HL8592",
-    note:"PUSH 교대",
-    team:"1/2",
-    arrStamp:"",
-    depStamp:"",
-    memo:""
-  });
-  saveData();
-}
-
-if(schedules.length===0){
-  addSample();
-}
-
-function getTeamStyle(team){
-
-  const num=parseInt(team);
-
-  if(num>=1&&num<=8)
-    return{header:"#1565c0",bg:"#e3f2fd"};
-  if(num>=9&&num<=16)
-    return{header:"#f9a825",bg:"#fff8e1"};
-  if(num>=17&&num<=24)
-    return{header:"#ef6c00",bg:"#fff3e0"};
-
-  return{header:"#616161",bg:"#eeeeee"};
-}
-
-function getFiltered(){
-
-  if(showAll) return schedules;
-
-  return schedules.filter(s=>{
-    if(s.team.includes("/")){
-      return s.team.split("/").includes(currentTeam.replace("조",""));
-    }
-    return s.team===currentTeam.replace("조","");
-  });
-}
-
-function stamp(type,index){
-
-  const now=new Date();
-  const time=now.getHours().toString().padStart(2,"0")+":"+
-             now.getMinutes().toString().padStart(2,"0");
-
-  const s=schedules[index];
-
-  if(type==="arr"){
-    if(!s.arrStamp){
-      s.arrStamp=time;
-    }else{
-      return;
-    }
-  }
-
-  if(type==="dep"){
-    if(!s.depStamp){
-      s.depStamp=time;
-    }else{
-      return;
-    }
-  }
-
-  if(navigator.vibrate) navigator.vibrate(80);
-
-  saveData();
-  render();
-}
-
-function handleBackgroundTap(e){
-
-  if(e.target.tagName==="TEXTAREA"||
-     e.target.classList.contains("time-btn")) return;
-
-  const now=new Date().getTime();
-
-  if(now-lastTap<300){
-    showAll=!showAll;
-    document.getElementById("modeLabel").innerText=
-      showAll?"전체":currentTeam;
-
-    if(navigator.vibrate) navigator.vibrate(100);
-
-    render();
-  }
-
-  lastTap=now;
-}
-
-function render(){
-
-  const area=document.getElementById("scheduleArea");
-  area.innerHTML="";
-
-  const list=getFiltered();
-
-  list.forEach((s,i)=>{
-
-    const displayTeam=showAll ? s.team : currentTeam.replace("조","");
-    const style=getTeamStyle(displayTeam);
-
-    const arrColor=s.arrStamp?"#d32f2f":"black";
-    const arrWeight=s.arrStamp?"bold":"normal";
-
-    const depColor=s.depStamp?"#d32f2f":"black";
-    const depWeight=s.depStamp?"bold":"normal";
-
-    area.innerHTML+=`
-    <div class="card" style="background:${style.bg}">
-      <div style="background:${style.header};color:white;padding:6px;text-align:center;font-weight:bold;">
-        ${displayTeam}조
-      </div>
-
-      <div class="row">
-        ${s.arrFlight} ${s.arrTime}
-        <span class="time-btn"
-        style="color:${arrColor};font-weight:${arrWeight}"
-        onclick="stamp('arr',${i})">
-        ${s.arrStamp||""}
-        </span>
-        ${s.arrGate} ${s.arrAirport}
-      </div>
-
-      <div class="memo">
-        <textarea onchange="schedules[${i}].memo=this.value;saveData()">
-${s.memo||""}</textarea>
-      </div>
-
-      <div class="row">
-        ${s.depFlight} ${s.depTime}
-        <span class="time-btn"
-        style="color:${depColor};font-weight:${depWeight}"
-        onclick="stamp('dep',${i})">
-        ${s.depStamp||""}
-        </span>
-        ${s.depAirport}
-      </div>
-
-      <div class="row">
-        ${s.hl} | 특이: ${s.note}
-      </div>
-    </div>
-    `;
-  });
-}
-
-render();
-
+function applyBulkOt(){const v=String($('bulkOtInput').value||'').replace(/[^0-9]/g,'').slice(0,4); if(!v)return; document.querySelectorAll('#dayMemberList .otInput').forEach(inp=>{inp.value=v.padStart(4,'0')});}
+function saveDayModal(){const data=getTeamData(selectedDateKey,selectedTeam); data.shift=$('shiftInput').value.trim(); data.memo=$('memoInput').value.trim(); data.updatedAt=Date.now(); data.leaves={}; data.ot={}; document.querySelectorAll('#dayMemberList .leaveSelect').forEach(sel=>{const name=sel.dataset.name; const otEl=document.querySelector(`#dayMemberList .otInput[data-name="${CSS.escape(name)}"]`); const min=otEl?parseOtInput(otEl.value):0; if(sel.value) data.leaves[name]=sel.value; if(min) data.ot[name]=min;}); saveSchedules(); closeDayModal(); render()}
+function renderAllTeamList(key){const wrap=$('allTeamList'); wrap.innerHTML=''; const day=schedules[key]||{}; for(const t of TEAMS){const row=document.createElement('div'); row.className='teamEditRow'; row.innerHTML=`<div class="teamNamePill">${t}</div><input class="quickTeamInput" data-team="${escapeAttr(t)}" value="${escapeAttr((day[t]&&day[t].shift)||'')}" placeholder="근무 코드" />`; wrap.appendChild(row)}}
+function openMemberModal(){$('memberTeamTitle').textContent=`${selectedTeam} 조원`; $('newMemberInput').value=''; renderMemberManageList(); $('memberModal').style.display='flex'} function closeMemberModal(){$('memberModal').style.display='none'}
+function addMember(){const name=$('newMemberInput').value.trim(); if(!name)return; const list=getMembers(selectedTeam); if(list.length>=MAX_MEMBERS&&!list.includes(name)){alert('조원은 최대 6명까지만 추가할 수 있어.');return} if(!list.includes(name)) list.push(name); $('newMemberInput').value=''; renderMemberManageList()}
+function renderMemberManageList(){const wrap=$('memberManageList'); wrap.innerHTML=''; const list=getMembers(selectedTeam); if(!list.length){wrap.innerHTML='<div class="hint">조원 추가 버튼으로 이름을 넣어줘.</div>'; return} list.forEach((name,idx)=>{const row=document.createElement('div'); row.className='memberRow'; row.innerHTML=`<input class="memberNameEdit" data-idx="${idx}" value="${escapeAttr(name)}" /><div></div><div></div><button class="minusBtn delMemberBtn" data-idx="${idx}">−</button>`; wrap.appendChild(row)}); wrap.querySelectorAll('.delMemberBtn').forEach(btn=>btn.onclick=()=>{getMembers(selectedTeam).splice(Number(btn.dataset.idx),1); renderMemberManageList()})}
+function saveMemberModal(){const list=[]; document.querySelectorAll('.memberNameEdit').forEach(inp=>{const v=inp.value.trim(); if(v&&!list.includes(v)&&list.length<MAX_MEMBERS)list.push(v)}); members[selectedTeam]=list; saveMembers(); closeMemberModal(); render()}
+function openMonthModal(){$('monthText').value=''; $('monthModal').style.display='flex'} function closeMonthModal(){$('monthModal').style.display='none'} function saveMonthModal(){const lines=$('monthText').value.split(/\n+/).map(v=>v.trim()).filter(Boolean); const y=viewDate.getFullYear(),m=viewDate.getMonth(); for(const line of lines){const match=line.match(/^(\d{1,2})\s+(.+)$/); if(!match)continue; const dayNum=Number(match[1]); const text=match[2].trim(); const last=new Date(y,m+1,0).getDate(); if(dayNum<1||dayNum>last)continue; const key=`${y}-${pad(m+1)}-${pad(dayNum)}`; const data=getTeamData(key,selectedTeam); data.shift=text; data.updatedAt=Date.now()} saveSchedules(); closeMonthModal(); render()}
+$('teamSelect').onchange=e=>{selectedTeam=e.target.value; render()}; $('mainSelect').onchange=e=>{localStorage.setItem(MAIN_KEY,e.target.value); selectedTeam=e.target.value; $('teamSelect').value=selectedTeam; render()}; $('prevMonthBtn').onclick=()=>{viewDate.setMonth(viewDate.getMonth()-1); render()}; $('nextMonthBtn').onclick=()=>{viewDate.setMonth(viewDate.getMonth()+1); render()}; $('todayBtn').onclick=()=>{viewDate=new Date(); viewDate.setDate(1); render()}; $('monthEditBtn').onclick=openMonthModal; $('memberBtn').onclick=openMemberModal; $('dayCloseBtn').onclick=closeDayModal; $('daySaveBtn').onclick=saveDayModal; $('monthCloseBtn').onclick=closeMonthModal; $('monthSaveBtn').onclick=saveMonthModal; $('memberCloseBtn').onclick=closeMemberModal; $('memberSaveBtn').onclick=saveMemberModal; $('addMemberBtn').onclick=addMember; $('applyBulkOtBtn').onclick=applyBulkOt; $('bulkOtInput').addEventListener('input',e=>{e.target.value=e.target.value.replace(/[^0-9]/g,'').slice(0,4)}); $('bulkOtInput').addEventListener('keydown',e=>{if(e.key==='Enter')applyBulkOt()}); $('newMemberInput').addEventListener('keydown',e=>{if(e.key==='Enter')addMember()}); ['dayModal','monthModal','memberModal'].forEach(id=>$(id).addEventListener('click',e=>{if(e.target.id===id)$(id).style.display='none'}));
+initSelects(); render();
 </script>
 </body>
 </html>
